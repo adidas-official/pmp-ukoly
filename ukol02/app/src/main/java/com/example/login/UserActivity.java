@@ -17,6 +17,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         displayWelcomeMessage();
+        sendPaymentIntent();
         Logout();
     }
 
@@ -28,6 +29,17 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent logout = new Intent("com.example.login.LoginActivity");
                 startActivity(logout);
+            }
+        });
+    }
+
+    private void sendPaymentIntent() {
+        Button sendPayment = (Button) findViewById(R.id.button_sendMoney);
+        sendPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendPaymentActivity = new Intent("com.example.login.SendPaymentActivity");
+                startActivity(sendPaymentActivity);
             }
         });
     }

@@ -4,8 +4,17 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="submit">Login</string>
-    <string name="welcome">Welcome, %1s</string>
     <string name="logout">Logout</string>
     <string name="incorrect">Incorrect credentials</string>
     <string name="attempts">Attempts</string>
+
+    <string name="welcome">%1s</string>
+    <string name="accountNum">Cislo uctu: </string>
+    <string name="placeholderNum">1234567890</string>
+    <string name="placeholderStr">Text</string>
+    <string name="placeholderCur">12,345 Kc</string>
+    <string name="balanceLabel">Zustatek: </string>
+
+    <string name="paymentText">Zaplatit</string>
+    <string name="cancel">Zrusit</string>
 </resources>

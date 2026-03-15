@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
         <activity
+            android:name=".SendPaymentActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.login.SendPaymentActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".UserActivity"
             android:exported="true">
             <intent-filter>

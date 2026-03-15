@@ -11,8 +11,8 @@
         android:id="@+id/textView_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="144dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,13 +20,71 @@
 
     <Button
         android:id="@+id/button_logout"
-        android:layout_width="189dp"
-        android:layout_height="54dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/logout"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_anLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="101dp"
+        android:text="@string/accountNum"
+        app:layout_constraintStart_toStartOf="@+id/textView_welcome"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_an"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/placeholderNum"
+        app:layout_constraintStart_toEndOf="@+id/textView_anLabel"
+        app:layout_constraintTop_toTopOf="@+id/textView_anLabel" />
+
+    <TextView
+        android:id="@+id/textView_balanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="@string/balanceLabel"
+        app:layout_constraintStart_toStartOf="@+id/textView_anLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textView_anLabel" />
+
+    <TextView
+        android:id="@+id/textView_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholderCur"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_balanceLabel"
+        app:layout_constraintStart_toStartOf="@+id/textView_an" />
+
+    <Button
+        android:id="@+id/button_sendMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:text="Poslat platbu"
+        android:textSize="20sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintStart_toStartOf="@+id/textView_balanceLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textView_balanceLabel" />
+
+    <Button
+        android:id="@+id/button_payme"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="Zaplat mi"
+        android:textSize="20sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/button_logout"
+        app:layout_constraintTop_toTopOf="@+id/button_sendMoney" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
