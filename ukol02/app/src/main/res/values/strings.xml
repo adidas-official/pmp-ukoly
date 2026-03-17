@@ -18,10 +18,27 @@
     <string name="balanceLabel">Zustatek</string>
     <string name="amount">Castka</string>
     <string name="vs">VS</string>
+    <string name="ss">SS</string>
     <string name="ks">KS</string>
     <string name="note">Poznamka</string>
     <string name="note2receiver">Zprava prijemci</string>
     <string name="receiver">Protiucet</string>
+    <string name="copy_message">Zkopirovat zpravu</string>
+
+    <string-array name="bankcodes">
+        <item>0100</item>
+        <item>0300</item>
+        <item>0600</item>
+        <item>0710</item>
+        <item>0800</item>
+        <item>2010</item>
+        <item>2100</item>
+        <item>2700</item>
+        <item>3030</item>
+        <item>5500</item>
+        <item>6210</item>
+        <item>8090</item>
+    </string-array>
 
     <string name="paymentText">Zaplatit</string>
     <string name="payme">Zaplat mi</string>

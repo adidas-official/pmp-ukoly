@@ -22,9 +22,9 @@
     <TableLayout
         android:id="@+id/tableLayout3"
         android:layout_width="325dp"
-        android:layout_height="325dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="120dp"
+        android:layout_height="381dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="96dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_cancel">
 
@@ -57,12 +57,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/banknum" />
 
-            <EditText
-                android:id="@+id/editTex_bankcode"
+            <Spinner
+                android:id="@+id/spinner_bankcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:spinnerMode="dropdown" />
+
         </TableRow>
 
         <TableRow
@@ -130,6 +131,25 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView_ssLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ss" />
+
+            <EditText
+                android:id="@+id/editText_ss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="0000" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,16 +183,28 @@
                 android:inputType="text" />
         </TableRow>
 
+
     </TableLayout>
 
     <Button
         android:id="@+id/button_sendMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="32dp"
         android:text="@string/send"
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="@+id/button_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout3" />
+
+    <Button
+        android:id="@+id/button_copy_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/copy_message"
+        app:cornerRadius="0dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

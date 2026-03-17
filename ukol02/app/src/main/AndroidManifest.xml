@@ -13,7 +13,13 @@
         android:theme="@style/Theme.Login">
         <activity
             android:name=".checkPaymentActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.login.checkPaymentActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SendPaymentActivity"
             android:exported="true">
