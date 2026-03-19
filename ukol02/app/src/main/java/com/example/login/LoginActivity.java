@@ -39,12 +39,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkLogin(username, password)) {
-                    Toast.makeText(LoginActivity.this, "Correct credentials", Toast.LENGTH_LONG).show();
                     Intent login_success = new Intent("com.example.login.UserActivity");
                     login_success.putExtra("username", username.getText().toString());
                     startActivity(login_success);
                 } else {
-                    Toast.makeText(LoginActivity.this, "Incorrect credentials, remaining attempts: ".concat(Integer.toString(--attempt_counter)), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Incorrect credentials, remaining attempts: ".concat(Integer.toString(--attempt_counter)), Toast.LENGTH_SHORT).show();
                     attempts.setText(Integer.toString(attempt_counter));
 
                     if (attempt_counter == 0 ) {
