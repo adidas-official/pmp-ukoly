@@ -20,10 +20,12 @@
     <string name="vs">VS</string>
     <string name="ss">SS</string>
     <string name="ks">KS</string>
+    <string name="date">Datum</string>
     <string name="note">Poznamka</string>
     <string name="note2receiver">Zprava prijemci</string>
     <string name="receiver">Protiucet</string>
     <string name="copy_message">Zkopirovat zpravu</string>
+    <string name="recipient">/</string>
 
     <string-array name="bankcodes">
         <item>0100</item>
@@ -43,6 +45,7 @@
     <string name="paymentText">Zaplatit</string>
     <string name="payme">Zaplat mi</string>
     <string name="cancel">Zrusit</string>
+    <string name="confirm">Potvrdit</string>
     <string name="send">Odeslat</string>
 
     <string name="numberFormatException">Zadejte cislo</string>

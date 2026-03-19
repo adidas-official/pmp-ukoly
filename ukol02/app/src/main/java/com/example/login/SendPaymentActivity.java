@@ -71,7 +71,7 @@ public class SendPaymentActivity extends AppCompatActivity {
                 try {
                     double payment = Double.parseDouble(amount.getText().toString());
                     if (payment < balance) {
-                        Intent checkPayment = new Intent("com.example.login.checkPaymentActivity");
+                        Intent checkPayment = new Intent("com.example.login.CheckPaymentActivity");
                         checkPayment.putExtra("payment", payment);
                         checkPayment.putExtra("bankaccount", bankaccount.getText().toString());
                         checkPayment.putExtra("bankcode", bankcode.getSelectedItem().toString());

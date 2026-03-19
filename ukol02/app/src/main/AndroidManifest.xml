@@ -12,10 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
         <activity
-            android:name=".checkPaymentActivity"
+            android:name=".PaymentDetailActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.example.login.PaymentDetailActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CheckPaymentActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.example.login.checkPaymentActivity" />
+                <action android:name="com.example.login.CheckPaymentActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
