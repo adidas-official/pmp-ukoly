@@ -24,6 +24,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void generateSummary() {
+//        Tohle se bude brat z databaze z tabulky payments
         String[] payments = {"1500 Kc", "200 Kc", "1420 Kc"};
         String[] accounts = {"2800123456/2010", "55001294421/5510", "8002101092/0800"};
         String[] dates = {"02.03.2026", "03.03.2026", "04.03.2026"};

@@ -17,8 +17,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private TextView attempts;
     private Button submit_btn;
-    private final static String uname = "root";
-    private final static String pwd = "toor";
+    private static String uname;
+    private static String pwd;
     int attempt_counter = 5;
 
     @Override
@@ -26,6 +26,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Login();
+        Account account = new Account("280011223344", 2010, 100000.0,"harrypotter", "voldemortsux");
+        uname = account.getUsername();
+        pwd = account.getPassword();
+        try (dbConnect db = new dbConnect(this)) {
+            db.addAccount(account);
+        }
     }
 
     public void Login() {
