@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ukol01"
 include(":app")
+ 

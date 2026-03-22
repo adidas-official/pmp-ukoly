@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ukol01">
         <activity
+            android:name=".categoryActivity"
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="com.example.ukol01.categoryActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
