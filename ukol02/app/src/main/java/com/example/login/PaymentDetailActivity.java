@@ -19,7 +19,7 @@ public class PaymentDetailActivity extends AppCompatActivity {
     }
 
     private void goBack() {
-        Button cancel = (Button) findViewById(R.id.button_cancel);
+        Button cancel = findViewById(R.id.button_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,7 +30,7 @@ public class PaymentDetailActivity extends AppCompatActivity {
 
     private void getDataFromActivity() {
         Intent i = this.getIntent();
-        TextView tvid = (TextView) findViewById(R.id.textView_id);
+        TextView tvid = findViewById(R.id.textView_id);
 
         if (i != null) {
             String id = i.getStringExtra("id");
