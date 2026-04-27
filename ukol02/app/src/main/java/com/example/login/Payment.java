@@ -1,6 +1,8 @@
 package com.example.login;
 
-public class Payment {
+import java.io.Serializable;
+
+public class Payment implements Serializable {
     private int id;
     private int from;
     private int bcode_from;

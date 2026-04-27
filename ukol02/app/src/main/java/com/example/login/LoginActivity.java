@@ -1,6 +1,8 @@
 package com.example.login;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,31 +16,28 @@ import org.w3c.dom.Text;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText username;
-    private EditText password;
+    private EditText password = (EditText) findViewById(R.id.editText_password);
     private TextView attempts;
-    private Button submit_btn;
+    private Button submit_btn = (Button) findViewById(R.id.button_submit);
     private static String uname;
     private static String pwd;
     int attempt_counter = 5;
+    AccountReaderDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        dbHelper = new AccountReaderDBHelper(this);
+
         Login();
-        Account account = new Account("280011223344", 2010, 100000.0,"harrypotter", "voldemortsux");
-        uname = account.getUsername();
-        pwd = account.getPassword();
-        try (dbConnect db = new dbConnect(this)) {
-            db.addAccount(account);
-        }
+
     }
 
     public void Login() {
-        username = (EditText) findViewById(R.id.editText_username);
-        password = (EditText) findViewById(R.id.editText_password);
-        submit_btn = (Button) findViewById(R.id.button_submit);
-        attempts = (EditText) findViewById(R.id.editText_attempts);
+        username = findViewById(R.id.editText_username);
+        attempts = findViewById(R.id.editText_attempts);
         attempts.setText(Integer.toString(attempt_counter));
 
         submit_btn.setOnClickListener(new View.OnClickListener() {

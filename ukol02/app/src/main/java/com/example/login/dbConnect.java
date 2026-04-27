@@ -24,16 +24,16 @@ public class dbConnect extends SQLiteOpenHelper {
     private static final String password = "password";
 
 //    Columns of Payments table
-    private static final String id = "id";
-    private static final String counter_account = "counter_account";
-    private static final String bankcode = "bankcode";
-    private static final String amount = "amount";
-    private static final String date = "date";
-    private static final String vs = "vs";
-    private static final String ss = "ss";
-    private static final String ks = "ks";
-    private static final String note = "note";
-    private static final String note2rec = "note2rec";
+//    private static final String id = "id";
+//    private static final String counter_account = "counter_account";
+//    private static final String bankcode = "bankcode";
+//    private static final String amount = "amount";
+//    private static final String date = "date";
+//    private static final String vs = "vs";
+//    private static final String ss = "ss";
+//    private static final String ks = "ks";
+//    private static final String note = "note";
+//    private static final String note2rec = "note2rec";
 
     public dbConnect(@Nullable Context context) {
         super(context, dbName, null, version);
@@ -58,17 +58,17 @@ public class dbConnect extends SQLiteOpenHelper {
 
     }
 
-    public void addAccount(Account account) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(account_number, account.getAccountNumber());
-        values.put(bankcode_owner, account.getBankcode());
-        values.put(balance, account.getBalance());
-        values.put(username, account.getUsername());
-        values.put(password, account.getPassword());
-
-        database.insert(account_table, null, values);
-    }
+//    public void addAccount(Account account) {
+//        SQLiteDatabase database = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(account_number, account.getAccountNumber());
+//        values.put(bankcode_owner, account.getBankcode());
+//        values.put(balance, account.getBalance());
+//        values.put(username, account.getUsername());
+//        values.put(password, account.getPassword());
+//
+//        database.insert(account_table, null, values);
+//    }
 
 //    public void addPayment(Payment payment) {
 //        SQLiteDatabase database = this.getWritableDatabase();

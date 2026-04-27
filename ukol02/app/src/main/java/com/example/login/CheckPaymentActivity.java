@@ -25,8 +25,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cancelIntent = new Intent("com.example.login.SendPaymentActivity");
-                startActivity(cancelIntent);
+                finish();
             }
         });
     }
