@@ -30,21 +30,19 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
         
         session = (UserSession) getIntent().getSerializableExtra("user_session");
-        // Updated to use Singleton
         dbHelper = AccountReaderDBHelper.getInstance(this);
         
         displayWelcomeMessage();
         displayAccountInfo();
         generateSummary();
         sendPaymentIntent();
+        payMeIntent();
         Logout();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Since session data (like balance) might have changed in other activities, 
-        // we refresh it from the database to keep the "Transport" object in sync.
         refreshSessionData();
         displayAccountInfo();
         generateSummary();
@@ -78,11 +76,6 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void generateSummary() {
-        /*
-        Vygenerovani tabulky plateb
-        Kazda platba ma unikatni 'id', ktere se predava aktivite, spustene po kliknuti
-        na polozku v tabulce.
-         */
         TableLayout summary = findViewById(R.id.tableLayout_summary);
         summary.removeAllViews();
 
@@ -104,12 +97,15 @@ public class UserActivity extends AppCompatActivity {
         String[] projection = {
                 AccountReaderContract.PaymentEntry._ID,
                 AccountReaderContract.PaymentEntry.COLUMN_NAME_TO_ACCOUNT,
+                AccountReaderContract.PaymentEntry.COLUMN_NAME_FROM_ACCOUNT,
                 AccountReaderContract.PaymentEntry.COLUMN_NAME_AMOUNT,
                 AccountReaderContract.PaymentEntry.COLUMN_NAME_DATE
         };
 
-        String selection = AccountReaderContract.PaymentEntry.COLUMN_NAME_FROM_ACCOUNT + " = ?";
-        String[] selectionArgs = { session.getAccountNumber() };
+        // Query payments where user is either sender or receiver
+        String selection = AccountReaderContract.PaymentEntry.COLUMN_NAME_FROM_ACCOUNT + " = ? OR " +
+                          AccountReaderContract.PaymentEntry.COLUMN_NAME_TO_ACCOUNT + " = ?";
+        String[] selectionArgs = { session.getAccountNumber(), session.getAccountNumber() };
 
         Cursor cursor = db.query(
                 AccountReaderContract.PaymentEntry.TABLE_NAME,
@@ -122,11 +118,15 @@ public class UserActivity extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(AccountReaderContract.PaymentEntry._ID));
-            String toAccount = cursor.getString(cursor.getColumnIndexOrThrow(AccountReaderContract.PaymentEntry.COLUMN_NAME_TO_ACCOUNT));
+            String fromAcc = cursor.getString(cursor.getColumnIndexOrThrow(AccountReaderContract.PaymentEntry.COLUMN_NAME_FROM_ACCOUNT));
+            String toAcc = cursor.getString(cursor.getColumnIndexOrThrow(AccountReaderContract.PaymentEntry.COLUMN_NAME_TO_ACCOUNT));
             double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(AccountReaderContract.PaymentEntry.COLUMN_NAME_AMOUNT));
             String date = cursor.getString(cursor.getColumnIndexOrThrow(AccountReaderContract.PaymentEntry.COLUMN_NAME_DATE));
 
-            addTableRow(summary, id, toAccount, amount, date);
+            // If we are the receiver, the other party is the 'account' to display
+            String displayAccount = session.getAccountNumber().equals(toAcc) ? fromAcc : toAcc;
+            
+            addTableRow(summary, id, displayAccount, amount, date);
         }
         cursor.close();
     }
@@ -141,7 +141,15 @@ public class UserActivity extends AppCompatActivity {
 
         tvDate.setText(date);
         tvAccount.setText(account);
-        tvPayment.setText(String.format(Locale.getDefault(), "-%.2f Kc", amount));
+        
+        // Correctly handle signs for incoming (+) and outgoing (-)
+        if (amount > 0) {
+            tvPayment.setText(String.format(Locale.getDefault(), "+%.2f Kc", amount));
+            tvPayment.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+        } else {
+            tvPayment.setText(String.format(Locale.getDefault(), "%.2f Kc", amount)); // amount already has - sign
+            tvPayment.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        }
 
         tvDate.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         tvAccount.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
@@ -159,12 +167,6 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void showPaymentDetail(int id) {
-        /*
-         Kazda platba je detailne zobrazena v samostatne aktivite.
-         Informace o platbe se v databazi vyhledavaji podle predaneho 'id'
-         kde kazda polozka v seznamu ma v tabulce skryty atribut s cislem
-         odpovidajicim id z tabulky 'payments'
-         */
         Intent paymentDetail = new Intent(this, PaymentDetailActivity.class);
         paymentDetail.putExtra("id", String.valueOf(id));
         startActivity(paymentDetail);
@@ -182,6 +184,14 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    private void payMeIntent() {
+        findViewById(R.id.button_payme).setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, PayMeActivity.class);
+            intent.putExtra("user_session", session);
+            startActivity(intent);
+        });
+    }
+
     private void displayWelcomeMessage() {
         TextView userTv = findViewById(R.id.textView_welcome);
         if (session != null) {
@@ -191,7 +201,6 @@ public class UserActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        // No need to close singleton dbHelper here
         super.onDestroy();
     }
 }
