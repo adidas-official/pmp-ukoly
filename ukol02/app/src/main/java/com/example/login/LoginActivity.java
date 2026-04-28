@@ -12,6 +12,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
+    /**
+     * Trida pro prihlaseni uzivatele. Uzivatel ma k dispozici pouze 5 pokusu, potom je "zablokovan"
+     * Blokace neni permanentni, po restartu aplikace se muze znovu zkusit prihlasit.
+     * TODO: Opravit zadavani vstupnich parametru - osetrit vstup kvuli mozne sql injection
+     */
     private EditText username;
     private EditText password;
     private TextView attempts;
@@ -65,8 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String[] projection = {
                 AccountReaderContract.AccountReader.COLUMN_NAME_ACCOUNT_NUM,
-                AccountReaderContract.AccountReader.COLUMN_NAME_BALANCE,
-                AccountReaderContract.AccountReader.COLUMN_NAME_BANK_CODE_OWNER
+                AccountReaderContract.AccountReader.COLUMN_NAME_BALANCE
         };
 
         String selection = AccountReaderContract.AccountReader.COLUMN_NAME_USERNAME + " = ? AND " +
@@ -85,8 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             String accNum = cursor.getString(0);
             double balance = cursor.getDouble(1);
-            int bankCode = cursor.getInt(2);
-            session = new UserSession(user, accNum, balance, bankCode);
+            session = new UserSession(user, accNum, balance);
         }
         cursor.close();
         return session;

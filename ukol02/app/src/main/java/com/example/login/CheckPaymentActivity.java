@@ -2,7 +2,6 @@ package com.example.login;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +29,6 @@ public class CheckPaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_payment);
         
-        // Use Singleton instead of 'new'
         dbHelper = AccountReaderDBHelper.getInstance(this);
         
         getDataFromActivity();
@@ -41,39 +39,38 @@ public class CheckPaymentActivity extends AppCompatActivity {
     private void getDataFromActivity() {
         Intent i = getIntent();
         if (i != null) {
-            // Retrieve transport objects
             session = (UserSession) i.getSerializableExtra("user_session");
             paymentRequest = (PaymentRequest) i.getSerializableExtra("payment_request");
 
             if (paymentRequest != null) {
                 TextView amountTV = findViewById(R.id.textView_amount);
                 TextView bankAccountTV = findViewById(R.id.textView_bankaccount);
+                TextView vsTV = findViewById(R.id.textView_vs);
+                TextView ssTV = findViewById(R.id.textView_ss);
+                TextView ksTV = findViewById(R.id.textView_ks);
+                TextView noteTV = findViewById(R.id.textView_note);
+                TextView note2recTV = findViewById(R.id.textView_note2reciever);
                 
                 amountTV.setText(String.format(Locale.getDefault(), "%.2f Kc", paymentRequest.getAmount()));
                 bankAccountTV.setText(String.format(Locale.getDefault(), "%s/%s", 
                         paymentRequest.getToAccount(), paymentRequest.getBankCode()));
+                vsTV.setText(paymentRequest.getVs());
+                ssTV.setText(paymentRequest.getSs());
+                ksTV.setText(paymentRequest.getKs());
+                noteTV.setText(paymentRequest.getNote());
+                note2recTV.setText(paymentRequest.getNote2rec());
             }
         }
     }
 
     private void setupCancelButton() {
         Button cancel = findViewById(R.id.button_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        cancel.setOnClickListener(v -> finish());
     }
 
     private void setupConfirmButton() {
         Button confirm = findViewById(R.id.button_confirm);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processPayment();
-            }
-        });
+        confirm.setOnClickListener(v -> processPayment());
     }
 
     private void processPayment() {
@@ -98,22 +95,21 @@ public class CheckPaymentActivity extends AppCompatActivity {
                 // 2. Record the payment in DB
                 ContentValues paymentValues = new ContentValues();
                 paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_FROM_ACCOUNT, session.getAccountNumber());
-                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_TO_ACCOUNT, paymentRequest.getToAccount());
-                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_AMOUNT, amount);
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_TO_ACCOUNT, paymentRequest.getToAccount() + "/" + paymentRequest.getBankCode());
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_AMOUNT, -amount); // Save as negative
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_DATE, new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date()));
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_KS, paymentRequest.getKs());
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_SS, paymentRequest.getSs());
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_VS, paymentRequest.getVs());
                 paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_NOTE, paymentRequest.getNote());
-                
-                String currentDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());
-                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_DATE, currentDate);
+                paymentValues.put(AccountReaderContract.PaymentEntry.COLUMN_NAME_NOTE_TO_RECIPIENT, paymentRequest.getNote2rec());
 
                 db.insert(AccountReaderContract.PaymentEntry.TABLE_NAME, null, paymentValues);
 
-                // 3. Update the Transport Object (UserSession) local state
                 session.setBalance(newBalance);
-
                 db.setTransactionSuccessful();
                 Toast.makeText(this, "Payment successful!", Toast.LENGTH_SHORT).show();
                 
-                // 4. Return to UserActivity with the updated session
                 Intent intent = new Intent(this, UserActivity.class);
                 intent.putExtra("user_session", session);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -127,11 +123,5 @@ public class CheckPaymentActivity extends AppCompatActivity {
         } finally {
             db.endTransaction();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        // No need to close singleton dbHelper here
-        super.onDestroy();
     }
 }

@@ -16,7 +16,7 @@ public class AccountReaderDBHelper extends SQLiteOpenHelper {
     private static AccountReaderDBHelper instance;
 
     public static final String DATABASE_NAME = "bankApp.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     // Private constructor for Singleton
     private AccountReaderDBHelper(@Nullable Context context) {
@@ -32,14 +32,19 @@ public class AccountReaderDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        /*
+        Cislo uctu se ted uklada do db ve formatu xxxxxxxx/yyyy jako string.
+        Zmena oproti predchozi verzi. Tento zpusob je v praxi nejpouzivanejsi.
+        Cislo uctu nemelo smysl ukladat jako LONG, lepsi je pouzit string a potom dava
+        smysl, aby sloupec obsahoval i kod banky.
+         */
         db.execSQL(AccountReaderContract.SQL_CREATE_ACCOUNT);
         db.execSQL(AccountReaderContract.SQL_CREATE_PAYMENT);
 
         ContentValues values = new ContentValues();
         values.put(AccountReaderContract.AccountReader.COLUMN_NAME_USERNAME, "harrypotter");
         values.put(AccountReaderContract.AccountReader.COLUMN_NAME_PASSWORD, "voldemortsux");
-        values.put(AccountReaderContract.AccountReader.COLUMN_NAME_BANK_CODE_OWNER, 2010);
-        values.put(AccountReaderContract.AccountReader.COLUMN_NAME_ACCOUNT_NUM, "280011223344");
+        values.put(AccountReaderContract.AccountReader.COLUMN_NAME_ACCOUNT_NUM, "2800112233/2010");
         values.put(AccountReaderContract.AccountReader.COLUMN_NAME_BALANCE, 100000.0);
         
         db.insert(AccountReaderContract.AccountReader.TABLE_NAME, null, values);

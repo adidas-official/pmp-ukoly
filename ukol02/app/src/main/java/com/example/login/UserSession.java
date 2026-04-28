@@ -13,19 +13,16 @@ public class UserSession implements Serializable {
     private String username;
     private String accountNumber;
     private double balance;
-    private int bankCode;
 
-    public UserSession(String username, String accountNumber, double balance, int bankCode) {
+    public UserSession(String username, String accountNumber, double balance) {
         this.username = username;
         this.accountNumber = accountNumber;
         this.balance = balance;
-        this.bankCode = bankCode;
     }
 
     public String getUsername() { return username; }
     public String getAccountNumber() { return accountNumber; }
     public double getBalance() { return balance; }
-    public int getBankCode() { return bankCode; }
 
     public void setBalance(double balance) { this.balance = balance; }
 }

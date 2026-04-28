@@ -3,8 +3,8 @@ package com.example.login;
 import java.io.Serializable;
 
 /**
- * Transport Design Pattern: Carries payment details from SendPaymentActivity 
- * to CheckPaymentActivity for review and final processing.
+ * Navrhovy vzor prepravka pro
+ * snazsi sdileni dat mezi aktivitami.
  */
 public class PaymentRequest implements Serializable {
     private String toAccount;

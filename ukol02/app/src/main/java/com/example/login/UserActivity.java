@@ -78,6 +78,11 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void generateSummary() {
+        /*
+        Vygenerovani tabulky plateb
+        Kazda platba ma unikatni 'id', ktere se predava aktivite, spustene po kliknuti
+        na polozku v tabulce.
+         */
         TableLayout summary = findViewById(R.id.tableLayout_summary);
         summary.removeAllViews();
 
@@ -154,6 +159,12 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void showPaymentDetail(int id) {
+        /*
+         Kazda platba je detailne zobrazena v samostatne aktivite.
+         Informace o platbe se v databazi vyhledavaji podle predaneho 'id'
+         kde kazda polozka v seznamu ma v tabulce skryty atribut s cislem
+         odpovidajicim id z tabulky 'payments'
+         */
         Intent paymentDetail = new Intent(this, PaymentDetailActivity.class);
         paymentDetail.putExtra("id", String.valueOf(id));
         startActivity(paymentDetail);

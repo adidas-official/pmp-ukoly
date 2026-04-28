@@ -15,6 +15,7 @@ public class SendPaymentActivity extends AppCompatActivity {
      * aktivita vyuzivajici Prepravku pro snazsi praci pri sdileni mezi aktivitami.
      * Upgrade oproti predchozi verzi v ramci vyuziti databaze. Umoznuje nosit udaje s sebou mezi
      * aktivitami bez nutnosti vyptavani se DB na stejne data (cislo uctu, jmeno uzivatele atd.).
+     * Poznamka se da zkopirovat a vlozi se do zpravy pro prijemce
      */
     private UserSession session;
 
@@ -43,13 +44,13 @@ public class SendPaymentActivity extends AppCompatActivity {
         copy_message_button.setOnClickListener(v -> note2rec.setText(note.getText().toString()));
     }
 
-    /**
-     * Uzivatel zadal udaje o platbe a chysta se zaplatit.
-     * V tomto kroku je overeno, zda ma dostatecny zustatek na uctu, pokud ano, je smerovan na
-     * aktivitu, kde potvrdi zadane udaje a platba se nasledne zpracuje.
-     * Vyjimka osetruje stav, kdy uzivatel zadal ne-cislo
-     */
     private void createPayment() {
+        /*
+         Uzivatel zadal udaje o platbe a chysta se zaplatit.
+         V tomto kroku je overeno, zda ma dostatecny zustatek na uctu, pokud ano, je smerovan na
+         aktivitu, kde potvrdi zadane udaje a platba se nasledne zpracuje.
+         Vyjimka osetruje stav, kdy uzivatel zadal ne-cislo
+        */
         EditText bankaccountEt = findViewById(R.id.editText_an);
         Spinner bankcodeSpinner = findViewById(R.id.spinner_bankcode);
 
