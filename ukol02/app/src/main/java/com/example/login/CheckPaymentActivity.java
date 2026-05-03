@@ -1,11 +1,14 @@
 package com.example.login;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ public class CheckPaymentActivity extends AppCompatActivity {
         getDataFromActivity();
         setupCancelButton();
         setupConfirmButton();
+        setupSaveRecipient();
     }
 
     private void getDataFromActivity() {
@@ -71,6 +75,61 @@ public class CheckPaymentActivity extends AppCompatActivity {
     private void setupConfirmButton() {
         Button confirm = findViewById(R.id.button_confirm);
         confirm.setOnClickListener(v -> processPayment());
+    }
+
+    private void setupSaveRecipient() {
+        // Vytvoreni tlacitka, pomoci ktereho uzivatel muze ulozit znameho prijemce.
+        Button saveBtn = findViewById(R.id.button_save_recipient);
+        saveBtn.setOnClickListener(v -> {
+            if (paymentRequest == null) return;
+            
+            final EditText input = new EditText(this);
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.save_recipient)
+                    .setMessage("Zadejte jmeno prijemce")
+                    .setView(input)
+                    .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                        String name = input.getText().toString();
+                        if (!name.isEmpty()) {
+                            saveRecipientToDb(name, paymentRequest.getToAccount() + "/" + paymentRequest.getBankCode());
+                        } else {
+                            Toast.makeText(this, "Jmeno nesmi byt prazdne", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        });
+    }
+
+    private void saveRecipientToDb(String name, String account) {
+        // Ulozeni prijemce do DB s kontrolou existence
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        // Kontrola, zda jiz prijemce se stejnym jmenem nebo cislem uctu neexistuje pro tohoto uzivatele
+        Cursor cursor = db.query(
+                AccountReaderContract.RecipientEntry.TABLE_NAME,
+                null,
+                AccountReaderContract.RecipientEntry.COLUMN_NAME_OWNER_USERNAME + " = ? AND (" +
+                AccountReaderContract.RecipientEntry.COLUMN_NAME_NAME + " = ? OR " +
+                AccountReaderContract.RecipientEntry.COLUMN_NAME_ACCOUNT_NUM + " = ?)",
+                new String[]{session.getUsername(), name, account},
+                null, null, null
+        );
+
+        if (cursor.getCount() > 0) {
+            Toast.makeText(this, "Prijemce s timto jmenem nebo uctem jiz existuje", Toast.LENGTH_SHORT).show();
+            cursor.close();
+            return;
+        }
+        cursor.close();
+
+        ContentValues values = new ContentValues();
+        values.put(AccountReaderContract.RecipientEntry.COLUMN_NAME_NAME, name);
+        values.put(AccountReaderContract.RecipientEntry.COLUMN_NAME_ACCOUNT_NUM, account);
+        values.put(AccountReaderContract.RecipientEntry.COLUMN_NAME_OWNER_USERNAME, session.getUsername());
+        
+        db.insert(AccountReaderContract.RecipientEntry.TABLE_NAME, null, values);
+        Toast.makeText(this, "Prijemce ulozen", Toast.LENGTH_SHORT).show();
     }
 
     private void processPayment() {

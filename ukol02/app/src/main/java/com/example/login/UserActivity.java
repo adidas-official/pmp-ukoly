@@ -37,6 +37,7 @@ public class UserActivity extends AppCompatActivity {
         generateSummary();
         sendPaymentIntent();
         payMeIntent();
+        setupManageRecipients();
         Logout();
     }
 
@@ -133,7 +134,10 @@ public class UserActivity extends AppCompatActivity {
 
     private void addTableRow(TableLayout summary, int id, String account, double amount, String date) {
         TableRow row = new TableRow(this);
-        row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        row.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT
+        ));
         
         TextView tvDate = new TextView(this);
         TextView tvAccount = new TextView(this);
@@ -169,6 +173,7 @@ public class UserActivity extends AppCompatActivity {
     private void showPaymentDetail(int id) {
         Intent paymentDetail = new Intent(this, PaymentDetailActivity.class);
         paymentDetail.putExtra("id", String.valueOf(id));
+        paymentDetail.putExtra("user_session", session); // Pass session to allow saving recipient from detail
         startActivity(paymentDetail);
     }
     
@@ -187,6 +192,14 @@ public class UserActivity extends AppCompatActivity {
     private void payMeIntent() {
         findViewById(R.id.button_payme).setOnClickListener(v -> {
             Intent intent = new Intent(UserActivity.this, PayMeActivity.class);
+            intent.putExtra("user_session", session);
+            startActivity(intent);
+        });
+    }
+
+    private void setupManageRecipients() {
+        findViewById(R.id.button_manageRecipients).setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, RecipientManagementActivity.class);
             intent.putExtra("user_session", session);
             startActivity(intent);
         });

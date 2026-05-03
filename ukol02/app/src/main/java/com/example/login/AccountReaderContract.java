@@ -31,6 +31,18 @@ public class AccountReaderContract {
         public static final String COLUMN_NAME_NOTE_TO_RECIPIENT = "note_to_recipient";
     }
 
+    public static class RecipientEntry implements BaseColumns {
+        /**
+         * Tabulka pro vyber prijemce platby.
+         * Do ni se ukladaji jmena a cisla uctu znamych prijemcu.
+         * Ukladani je mozne z detailu platby a behem vytvareni nove platby.
+         */
+        public static final String TABLE_NAME = "recipient";
+        public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_ACCOUNT_NUM = "account_number"; // Format: xxxxxxxx/yyyy
+        public static final String COLUMN_NAME_OWNER_USERNAME = "owner_username";
+    }
+
     public static final String SQL_CREATE_ACCOUNT = "CREATE TABLE " + AccountReader.TABLE_NAME + " (" +
             AccountReader._ID + " INTEGER PRIMARY KEY," +
             AccountReader.COLUMN_NAME_USERNAME + " TEXT NOT NULL, " +
@@ -52,6 +64,15 @@ public class AccountReaderContract {
             PaymentEntry.COLUMN_NAME_NOTE_TO_RECIPIENT + " TEXT" +
             ")";
 
+    public static final String SQL_CREATE_RECIPIENT = "CREATE TABLE " + RecipientEntry.TABLE_NAME + " (" +
+            // vytvoreni nove tabulky pro ulozeni znamych prijemcu
+            RecipientEntry._ID + " INTEGER PRIMARY KEY," +
+            RecipientEntry.COLUMN_NAME_NAME + " TEXT NOT NULL, " +
+            RecipientEntry.COLUMN_NAME_ACCOUNT_NUM + " TEXT NOT NULL, " +
+            RecipientEntry.COLUMN_NAME_OWNER_USERNAME + " TEXT NOT NULL" +
+            ")";
+
     public static final String SQL_DELETE_ACCOUNT = "DROP TABLE IF EXISTS " + AccountReader.TABLE_NAME;
     public static final String SQL_DELETE_PAYMENT = "DROP TABLE IF EXISTS " + PaymentEntry.TABLE_NAME;
+    public static final String SQL_DELETE_RECIPIENT = "DROP TABLE IF EXISTS " + RecipientEntry.TABLE_NAME;
 }

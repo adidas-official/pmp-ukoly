@@ -16,7 +16,7 @@ public class AccountReaderDBHelper extends SQLiteOpenHelper {
     private static AccountReaderDBHelper instance;
 
     public static final String DATABASE_NAME = "bankApp.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     // Private constructor for Singleton
     private AccountReaderDBHelper(@Nullable Context context) {
@@ -40,6 +40,7 @@ public class AccountReaderDBHelper extends SQLiteOpenHelper {
          */
         db.execSQL(AccountReaderContract.SQL_CREATE_ACCOUNT);
         db.execSQL(AccountReaderContract.SQL_CREATE_PAYMENT);
+        db.execSQL(AccountReaderContract.SQL_CREATE_RECIPIENT);
 
         ContentValues values = new ContentValues();
         values.put(AccountReaderContract.AccountReader.COLUMN_NAME_USERNAME, "harrypotter");
@@ -54,6 +55,7 @@ public class AccountReaderDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
        db.execSQL(AccountReaderContract.SQL_DELETE_ACCOUNT);
        db.execSQL(AccountReaderContract.SQL_DELETE_PAYMENT);
+       db.execSQL(AccountReaderContract.SQL_DELETE_RECIPIENT);
        onCreate(db);
     }
 

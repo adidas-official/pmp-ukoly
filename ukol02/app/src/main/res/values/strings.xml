@@ -49,4 +49,17 @@
     <string name="send">Odeslat</string>
 
     <string name="numberFormatException">Zadejte cislo</string>
+    <string name="save_recipient">Ulozit prijemce</string>
+    <string name="select_recipient">Vyberte prijemce</string>
+    <string name="new_recipient">Novy prijemce</string>
+    <string name="manage_recipients">Sprava prijemcu</string>
+    <string name="add_new">Pridat noveho</string>
+    <string name="edit">Upravit</string>
+    <string name="delete">Smazat</string>
+    <string name="name">Jmeno</string>
+    <string name="back">Zpet</string>
+    <string name="fill_all">Vyplnte vsechna pole</string>
+    <string name="recipient_exists">Prijemce s timto jmenem nebo uctem jiz existuje</string>
+    <string name="recipient_saved">Prijemce ulozen</string>
+    <string name="delete_confirm">Opravdu chcete smazat prijemce %1$s?</string>
 </resources>

@@ -19,14 +19,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView_recipientLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/select_recipient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_cancel" />
+
+    <Spinner
+        android:id="@+id/spinner_recipients"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_recipientLabel" />
+
     <TableLayout
         android:id="@+id/tableLayout3"
         android:layout_width="325dp"
-        android:layout_height="381dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_cancel">
+        app:layout_constraintTop_toBottomOf="@+id/spinner_recipients">
 
         <TableRow
             android:layout_width="match_parent"
@@ -42,9 +63,9 @@
                 android:id="@+id/editText_an"
                 android:layout_width="228dp"
                 android:layout_height="wrap_content"
+                android:autofillHints="accountNumber"
                 android:ems="10"
                 android:inputType="number" />
-
         </TableRow>
 
         <TableRow
@@ -63,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:spinnerMode="dropdown" />
-
         </TableRow>
 
         <TableRow
@@ -82,8 +102,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Kc"
-                android:inputType="text" />
-
+                android:inputType="numberDecimal" />
         </TableRow>
 
         <TableRow
@@ -102,8 +121,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="0000"
-                android:inputType="text" />
-
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -122,8 +140,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="0000"
-                android:inputType="text" />
-
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -141,8 +158,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="text"
-                android:hint="0000" />
+                android:hint="0000"
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -182,8 +199,6 @@
                 android:hint="Zobrazi se prijemci"
                 android:inputType="text" />
         </TableRow>
-
-
     </TableLayout>
 
     <Button

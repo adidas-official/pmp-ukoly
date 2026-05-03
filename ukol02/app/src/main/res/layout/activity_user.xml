@@ -8,34 +8,50 @@
     tools:context=".UserActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout_actions"
         android:layout_width="320dp"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout_summary">
 
-        <Button
-            android:id="@+id/button_sendMoney"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="@string/paymentText"
-            android:textSize="20sp"
-            app:cornerRadius="0dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            <Button
+                android:id="@+id/button_sendMoney"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="@string/paymentText"
+                android:textSize="20sp"
+                app:cornerRadius="0dp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/button_payme"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@string/payme"
+                android:textSize="20sp"
+                app:cornerRadius="0dp" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/button_payme"
-            android:layout_width="150dp"
+            android:id="@+id/button_manageRecipients"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:text="@string/payme"
-            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:text="Sprava prijemcu"
+            android:textSize="18sp"
             app:cornerRadius="0dp" />
 
     </LinearLayout>
@@ -150,7 +166,7 @@
     <TableLayout
         android:id="@+id/tableLayout_summary"
         android:layout_width="320dp"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_marginStart="45dp"
         android:layout_marginTop="1dp"
         android:stretchColumns="*"
@@ -181,39 +197,6 @@
                 android:text="@string/amount" />
 
         </TableRow>
-
-<!--        TODO: dynamicly fill table using for cycle with data from db -->
-<!--        <TableRow-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:tag="1"-->
-<!--            android:focusable="true"-->
-<!--            android:clickable="true"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:onClick="rowPaymentClick"-->
-<!--            >-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/editTextDate_date1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="03.02.2026"-->
-<!--                android:textAlignment="textEnd"-->
-<!--                android:textSize="14sp" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView_account1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textAlignment="textEnd"-->
-<!--                android:text="28019928815/2010" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView_amount1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textAlignment="textEnd"-->
-<!--                android:text="499,00 Kc" />-->
-<!--        </TableRow>-->
 
     </TableLayout>
 
