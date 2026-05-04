@@ -3,15 +3,15 @@ package com.example.login;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class RecipientAdapter extends RecyclerView.Adapter<RecipientAdapter.RecipientViewHolder> {
-    private List<RecipientManagementActivity.Recipient> recipients;
-    private OnRecipientActionListener listener;
+    private final List<RecipientManagementActivity.Recipient> recipients;
+    private final OnRecipientActionListener listener;
 
     public interface OnRecipientActionListener {
         void onEdit(RecipientManagementActivity.Recipient recipient);
@@ -46,7 +46,7 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecipientAdapter.Reci
 
     static class RecipientViewHolder extends RecyclerView.ViewHolder {
         TextView nameTv, accountTv;
-        Button editBtn, deleteBtn;
+        ImageButton editBtn, deleteBtn; // Changed from Button to ImageButton to avoid ClassCastException
 
         public RecipientViewHolder(@NonNull View itemView) {
             super(itemView);
