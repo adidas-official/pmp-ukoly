@@ -2,4 +2,6 @@
     <string name="app_name">Nakupni seznam</string>
     <string name="add_item">Pridat</string>
     <string name="new_item">Nova polozka</string>
+    <string name="quantity">pocet</string>
+    <string name="edit_item">upravit</string>
 </resources>

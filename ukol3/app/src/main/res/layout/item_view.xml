@@ -8,24 +8,33 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="10dp"
-        android:text="item1"
-        />
+        android:layout_centerVertical="true"
+        android:text="item1" />
 
     <TextView
         android:id="@+id/tvQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@id/btnEdit"
+        android:layout_marginEnd="10dp"
+        android:layout_centerVertical="true"
+        android:text="@string/quantity" />
+
+    <ImageButton
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/edit_item"
+        android:text="@string/edit_item"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
         android:layout_alignParentEnd="true"
-        android:inputType="number"
-        android:text="price"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_edit"
         />
 
     <LinearLayout
@@ -35,5 +44,6 @@
         android:layout_below="@id/tvName"
         android:layout_marginTop="10dp"
         />
+
 
 </RelativeLayout>
