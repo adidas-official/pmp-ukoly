@@ -31,11 +31,22 @@
         android:contentDescription="@string/edit_item"
         android:text="@string/edit_item"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:layout_alignParentEnd="true"
+        android:layout_toStartOf="@id/btnDelete"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@android:drawable/ic_menu_edit"
         />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="Smazat položku" />
 
     <LinearLayout
         android:layout_width="match_parent"

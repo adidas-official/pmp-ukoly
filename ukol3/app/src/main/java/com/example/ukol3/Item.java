@@ -1,6 +1,11 @@
 package com.example.ukol3;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "items")
 public class Item {
+    @PrimaryKey(autoGenerate = true)
+    Integer id;
     String name;
     Integer quantity;
     boolean isCrossedOut;

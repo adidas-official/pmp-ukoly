@@ -30,40 +30,72 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        items = new ArrayList<>();
         etNewItemName = findViewById(R.id.etNewItemName);
         etNewItemQuantity = findViewById(R.id.etNewItemQuantity);
 
+        // 1. Inicializace seznamu a adaptéru (hned na začátku!)
+        items = new ArrayList<>();
+        adapter = new ItemAdapter(this, items);
+
+        // 2. Nastavení RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvListOfItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new ItemAdapter(this, items);
         recyclerView.setAdapter(adapter);
 
-        Button addNew = findViewById(R.id.add_new);
-        addNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // 3. Načtení dat z databáze na pozadí
+        loadDataFromDatabase();
 
-                try {
-                    String name = etNewItemName.getText().toString();
-                    int quantity = Integer.parseInt(etNewItemQuantity.getText().toString());
-                    if (name.isEmpty() || quantity < 1) {
-                        Toast.makeText(MainActivity.this, "Invalid name", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    addItem(name, quantity);
-                } catch (NumberFormatException e) {
-                    // Handle the exception
-                    Toast.makeText(MainActivity.this, "Invalid quantity", Toast.LENGTH_SHORT).show();
+        Button addNew = findViewById(R.id.add_new);
+        addNew.setOnClickListener(v -> {
+            try {
+                String name = etNewItemName.getText().toString().trim();
+                String qtyStr = etNewItemQuantity.getText().toString().trim();
+
+                if (name.isEmpty() || qtyStr.isEmpty()) {
+                    Toast.makeText(this, "Vyplňte všechna pole", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                int quantity = Integer.parseInt(qtyStr);
+                addItemToDatabase(name, quantity);
+
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Neplatné množství", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        }
+    // Metoda pro načtení dat
+    private void loadDataFromDatabase() {
+        new Thread(() -> {
+            List<Item> itemsFromDb = AppDatabase.getInstance(this).shoppingDao().getAllItems();
+            runOnUiThread(() -> {
+                // Aktualizujeme náš lokální seznam i adaptér
+                items.clear();
+                items.addAll(itemsFromDb);
+                adapter.notifyDataSetChanged();
+            });
+        }).start();
+    }
 
-    private void addItem(String name, Integer quantity) {
-        items.add(new Item(name, quantity));
-        adapter.notifyItemInserted(items.size() - 1);
+    // Metoda pro přidání do DB i do UI
+    private void addItemToDatabase(String name, int quantity) {
+        Item newItem = new Item(name, quantity);
+
+        new Thread(() -> {
+            // Uložení do Room
+            AppDatabase.getInstance(this).shoppingDao().insertItem(newItem);
+
+            // Získání ID, které vygenerovala DB (pokud ho potřebujete pro další práci)
+            // V tomto jednoduchém případě stačí znovu načíst seznam nebo přidat do UI
+            runOnUiThread(() -> {
+                items.add(newItem);
+                adapter.notifyItemInserted(items.size() - 1);
+
+                // Vyčištění políček
+                etNewItemName.setText("");
+                etNewItemQuantity.setText("");
+            });
+        }).start();
     }
 }
