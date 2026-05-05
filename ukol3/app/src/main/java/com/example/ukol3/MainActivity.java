@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,9 +44,19 @@ public class MainActivity extends AppCompatActivity {
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = etNewItemName.getText().toString();
-                Integer quantity = Integer.parseInt(etNewItemQuantity.getText().toString());
-                addItem(name, quantity);
+
+                try {
+                    String name = etNewItemName.getText().toString();
+                    int quantity = Integer.parseInt(etNewItemQuantity.getText().toString());
+                    if (name.isEmpty() || quantity < 1) {
+                        Toast.makeText(MainActivity.this, "Invalid name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    addItem(name, quantity);
+                } catch (NumberFormatException e) {
+                    // Handle the exception
+                    Toast.makeText(MainActivity.this, "Invalid quantity", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
