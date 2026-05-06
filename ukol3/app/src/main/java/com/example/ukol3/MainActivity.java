@@ -1,16 +1,11 @@
 package com.example.ukol3;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,11 +19,21 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etNewItemName;
     private EditText etNewItemQuantity;
+    private int currentListId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Získání ID seznamu z Intentu (výchozí hodnota -1 značí chybu)
+        currentListId = getIntent().getIntExtra("LIST_ID", -1);
+
+        if (currentListId == -1) {
+            Toast.makeText(this, "Chyba: Seznam nenalezen", Toast.LENGTH_SHORT).show();
+            finish(); // Zavře aktivitu, pokud nemá ID
+            return;
+        }
 
         etNewItemName = findViewById(R.id.etNewItemName);
         etNewItemQuantity = findViewById(R.id.etNewItemQuantity);
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 int quantity = Integer.parseInt(qtyStr);
-                addItemToDatabase(name, quantity);
+                addItemToDatabase(currentListId, name, quantity);
 
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Neplatné množství", Toast.LENGTH_SHORT).show();
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     // Metoda pro načtení dat
     private void loadDataFromDatabase() {
         new Thread(() -> {
-            List<Item> itemsFromDb = AppDatabase.getInstance(this).shoppingDao().getAllItems();
+            List<Item> itemsFromDb = AppDatabase.getInstance(this).shoppingDao().getItemsForList(currentListId);
             runOnUiThread(() -> {
                 // Aktualizujeme náš lokální seznam i adaptér
                 items.clear();
@@ -79,14 +84,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Metoda pro přidání do DB i do UI
-    private void addItemToDatabase(String name, int quantity) {
-        Item newItem = new Item(name, quantity);
+    private void addItemToDatabase(int shoppingListId, String name, int quantity) {
+        Item newItem = new Item(shoppingListId, name, quantity);
 
         new Thread(() -> {
             // Uložení do Room
             AppDatabase.getInstance(this).shoppingDao().insertItem(newItem);
 
-            // Získání ID, které vygenerovala DB (pokud ho potřebujete pro další práci)
+            // Získání ID, které vygenerovala DB
             // V tomto jednoduchém případě stačí znovu načíst seznam nebo přidat do UI
             runOnUiThread(() -> {
                 items.add(newItem);

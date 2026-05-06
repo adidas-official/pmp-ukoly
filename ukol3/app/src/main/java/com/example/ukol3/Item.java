@@ -6,14 +6,16 @@ import androidx.room.PrimaryKey;
 public class Item {
     @PrimaryKey(autoGenerate = true)
     Integer id;
+    Integer listId;
     String name;
     Integer quantity;
     boolean isCrossedOut;
 
-    public Item(String name, Integer quantity) {
+    public Item(Integer listId, String name, Integer quantity) {
         this.name = name;
         this.quantity = quantity;
         this.isCrossedOut = false;
+        this.listId = listId;
     }
 
     public String getName() {
@@ -36,8 +38,23 @@ public class Item {
         isCrossedOut = crossedOut;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getListId() {
+        return listId;
+    }
+
+    public void setListId(Integer listId) {
+        this.listId = listId;
     }
 }

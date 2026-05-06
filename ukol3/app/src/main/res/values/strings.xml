@@ -4,4 +4,7 @@
     <string name="new_item">Nova polozka</string>
     <string name="quantity">pocet</string>
     <string name="edit_item">upravit</string>
+    <string name="new_list">novy seznam</string>
+    <string name="edit_list">upravit seznam</string>
+    <string name="delete_list">Smazat seznam</string>
 </resources>

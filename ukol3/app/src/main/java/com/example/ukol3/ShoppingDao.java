@@ -9,8 +9,21 @@ import java.util.List;
 
 @Dao
 public interface ShoppingDao {
-    @Query("SELECT * FROM items")
-    List<Item> getAllItems();
+
+    @Query("SELECT * FROM shopping_lists")
+    List<ShoppingList> getAllShoppingLists();
+
+    @Insert
+    long insertShoppingList(ShoppingList shoppingList);
+
+    @Update
+    void updateShoppingList(ShoppingList shoppingList);
+
+    @Delete
+    void deleteShoppingList(ShoppingList shoppingList);
+
+    @Query("SELECT * FROM items WHERE listId = :listId")
+    List<Item> getItemsForList(int listId);
 
     @Insert
     void insertItem(Item item);
