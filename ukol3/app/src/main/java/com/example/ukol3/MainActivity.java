@@ -3,6 +3,7 @@ package com.example.ukol3;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etNewItemName;
     private EditText etNewItemQuantity;
+    private Button btnBack;
+    private TextView tvListName;
     private int currentListId;
 
     @Override
@@ -37,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
 
         etNewItemName = findViewById(R.id.etNewItemName);
         etNewItemQuantity = findViewById(R.id.etNewItemQuantity);
+        tvListName = findViewById(R.id.tvListName);
+        btnBack = findViewById(R.id.btnBack);
 
-        // 1. Inicializace seznamu a adaptéru (hned na začátku!)
+        tvListName.setText(getIntent().getStringExtra("LIST_NAME"));
+
+        // 1. Inicializace seznamu a adaptéru
         items = new ArrayList<>();
         adapter = new ItemAdapter(this, items);
 
@@ -68,14 +75,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Neplatné množství", Toast.LENGTH_SHORT).show();
             }
         });
+
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
     }
 
-    // Metoda pro načtení dat
     private void loadDataFromDatabase() {
         new Thread(() -> {
             List<Item> itemsFromDb = AppDatabase.getInstance(this).shoppingDao().getItemsForList(currentListId);
             runOnUiThread(() -> {
-                // Aktualizujeme náš lokální seznam i adaptér
                 items.clear();
                 items.addAll(itemsFromDb);
                 adapter.notifyDataSetChanged();
@@ -83,16 +92,14 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    // Metoda pro přidání do DB i do UI
     private void addItemToDatabase(int shoppingListId, String name, int quantity) {
         Item newItem = new Item(shoppingListId, name, quantity);
 
         new Thread(() -> {
-            // Uložení do Room
-            AppDatabase.getInstance(this).shoppingDao().insertItem(newItem);
+            // Uložení do Room a získání vygenerovaného ID
+            long generatedId = AppDatabase.getInstance(this).shoppingDao().insertItem(newItem);
+            newItem.setId((int) generatedId);
 
-            // Získání ID, které vygenerovala DB
-            // V tomto jednoduchém případě stačí znovu načíst seznam nebo přidat do UI
             runOnUiThread(() -> {
                 items.add(newItem);
                 adapter.notifyItemInserted(items.size() - 1);

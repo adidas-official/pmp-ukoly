@@ -34,51 +34,61 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemsViewHolder>{
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
         Item item = items.get(position);
 
-        try {
-            holder.tvName.setText(item.getName());
-            holder.tvQuantity.setText(String.valueOf(item.getQuantity()));
-        } catch (NumberFormatException e) {
-            Toast.makeText(context, "Invalid quantity", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        holder.tvName.setText(item.getName());
+        holder.tvQuantity.setText(String.valueOf(item.getQuantity()));
 
         updateStroke(holder, item.isCrossedOut());
 
         holder.itemView.setOnClickListener(v -> {
+            int currentPos = holder.getBindingAdapterPosition();
+            if (currentPos == RecyclerView.NO_POSITION) return;
+            
             item.setCrossedOut(!item.isCrossedOut());
-            AppDatabase.getInstance(v.getContext()).shoppingDao().updateItem(item);
-            notifyItemChanged(holder.getBindingAdapterPosition());
+            new Thread(() -> {
+                AppDatabase.getInstance(context).shoppingDao().updateItem(item);
+                if (context instanceof Activity) {
+                    ((Activity) context).runOnUiThread(() -> notifyItemChanged(currentPos));
+                }
+            }).start();
         });
 
         holder.btnDelete.setOnClickListener(v -> {
             int currentPos = holder.getBindingAdapterPosition();
             if (currentPos != RecyclerView.NO_POSITION) {
-                AppDatabase.getInstance(v.getContext()).shoppingDao().deleteItem(item);
-                items.remove(currentPos);
-                notifyItemRemoved(currentPos);
+                new Thread(() -> {
+                    AppDatabase.getInstance(context).shoppingDao().deleteItem(item);
+                    if (context instanceof Activity) {
+                        ((Activity) context).runOnUiThread(() -> {
+                            int newPos = holder.getBindingAdapterPosition();
+                            if (newPos != RecyclerView.NO_POSITION) {
+                                items.remove(newPos);
+                                notifyItemRemoved(newPos);
+                            }
+                        });
+                    }
+                }).start();
             }
         });
 
         holder.btnEdit.setOnClickListener(v -> {
-            showEditDialog(v.getContext(), item, holder.getBindingAdapterPosition());
+            int currentPos = holder.getBindingAdapterPosition();
+            if (currentPos != RecyclerView.NO_POSITION) {
+                showEditDialog(context, item, currentPos);
+            }
         });
 
     }
 
     private void showEditDialog(Context context, Item item, int position) {
-        // 1. "Nafouknutí" XML layoutu
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_edit_item, null);
 
-        // 2. Propojení prvků z XML
         EditText etName = dialogView.findViewById(R.id.etEditName);
         EditText etQuantity = dialogView.findViewById(R.id.etEditQuantity);
 
-        // 3. Předvyplnění daty
         etName.setText(item.getName());
         etQuantity.setText(String.valueOf(item.getQuantity()));
 
-        // 4. Sestavení AlertDialogu
         new AlertDialog.Builder(context)
                 .setTitle("Upravit položku")
                 .setView(dialogView)
@@ -87,18 +97,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemsViewHolder>{
                     String qtyStr = etQuantity.getText().toString().trim();
 
                     if (!newName.isEmpty() && !qtyStr.isEmpty()) {
-                        item.setName(newName);
-                        item.setQuantity(Integer.parseInt(qtyStr));
+                        try {
+                            int quantity = Integer.parseInt(qtyStr);
+                            item.setName(newName);
+                            item.setQuantity(quantity);
 
-                        // Uložení do Room databáze na pozadí
-                        new Thread(() -> {
-                            AppDatabase.getInstance(context).shoppingDao().updateItem(item);
-
-                            // Update UI v hlavním vlákně
-                            if (context instanceof Activity) {
-                                ((Activity) context).runOnUiThread(() -> notifyItemChanged(position));
-                            }
-                        }).start();
+                            new Thread(() -> {
+                                AppDatabase.getInstance(context).shoppingDao().updateItem(item);
+                                if (context instanceof Activity) {
+                                    ((Activity) context).runOnUiThread(() -> notifyItemChanged(position));
+                                }
+                            }).start();
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(context, "Neplatné množství", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Zrušit", null)

@@ -1,8 +1,14 @@
 package com.example.ukol3;
+
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "items")
+@Entity(tableName = "items",
+        foreignKeys = @ForeignKey(entity = ShoppingList.class,
+                parentColumns = "listId",
+                childColumns = "listId",
+                onDelete = ForeignKey.CASCADE))
 public class Item {
     @PrimaryKey(autoGenerate = true)
     Integer id;

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ListsActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -21,28 +21,29 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListOfLists"
         android:layout_width="match_parent"
-        android:layout_height="595dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <EditText
             android:id="@+id/etNewListName"
-            android:layout_width="195dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/new_list"
-            android:inputType="text" />
+            android:inputType="textCapSentences" />
 
 
         <Button
             android:id="@+id/add_newList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/add_item" />
     </LinearLayout>
 

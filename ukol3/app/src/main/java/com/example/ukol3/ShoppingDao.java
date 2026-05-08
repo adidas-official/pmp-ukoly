@@ -26,7 +26,7 @@ public interface ShoppingDao {
     List<Item> getItemsForList(int listId);
 
     @Insert
-    void insertItem(Item item);
+    long insertItem(Item item);
 
     @Update
     void updateItem(Item item);
