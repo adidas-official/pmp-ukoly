@@ -37,7 +37,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemsViewHolder>{
         holder.tvName.setText(item.getName());
         holder.tvQuantity.setText(String.valueOf(item.getQuantity()));
 
-        updateStroke(holder, item.isCrossedOut());
+        updateVisualState(holder, item.isCrossedOut());
 
         holder.itemView.setOnClickListener(v -> {
             int currentPos = holder.getBindingAdapterPosition();
@@ -116,6 +116,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemsViewHolder>{
                 .setNegativeButton("Zrušit", null)
                 .create()
                 .show();
+    }
+
+    private void updateVisualState(ItemsViewHolder holder, boolean isCrossedOut) {
+        if (isCrossedOut) {
+            // Stav: Dokončeno (Červený text, světle růžové pozadí)
+            holder.tvName.setTextColor(android.graphics.Color.parseColor("#B71C1C")); // Tmavě červená
+            holder.tvQuantity.setTextColor(android.graphics.Color.parseColor("#B71C1C"));
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFEBEE")); // Světle růžová
+        } else {
+            // Stav: Aktivní (Standardní barvy - např. černý text a bílé/průhledné pozadí)
+            holder.tvName.setTextColor(android.graphics.Color.BLACK);
+            holder.tvQuantity.setTextColor(android.graphics.Color.BLACK);
+            holder.itemView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        }
     }
 
     private void updateStroke(ItemsViewHolder holder, boolean isCrossedOut) {

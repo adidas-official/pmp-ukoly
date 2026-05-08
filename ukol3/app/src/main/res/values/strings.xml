@@ -8,4 +8,5 @@
     <string name="edit_list">upravit seznam</string>
     <string name="delete_list">Smazat seznam</string>
     <string name="btnBack">Zpet</string>
+    <string name="btnClose">Ukoncit</string>
 </resources>

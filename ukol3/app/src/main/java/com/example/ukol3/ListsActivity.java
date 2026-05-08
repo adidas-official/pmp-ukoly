@@ -17,6 +17,7 @@ public class ListsActivity extends AppCompatActivity {
     private List<ShoppingList> shoppingLists;
     private ListAdapter adapter;
     private EditText etNewListName;
+    private Button btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class ListsActivity extends AppCompatActivity {
         etNewListName = findViewById(R.id.etNewListName);
         shoppingLists = new ArrayList<>();
         adapter = new ListAdapter(this, shoppingLists);
+        btnBack = findViewById(R.id.btnBack);
 
         RecyclerView recyclerView = findViewById(R.id.rvListOfLists);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -39,6 +41,10 @@ public class ListsActivity extends AppCompatActivity {
             if (!name.isEmpty()) {
                 addListToDatabase(name);
             }
+        });
+
+        btnBack.setOnClickListener(v -> {
+            finish();
         });
     }
 
