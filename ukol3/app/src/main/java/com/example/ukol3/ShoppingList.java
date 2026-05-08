@@ -7,6 +7,8 @@ public class ShoppingList {
     @PrimaryKey(autoGenerate = true)
     private int listId;
     private String name;
+    private int backgroundColor = 0xFFFFFFFF;
+    private int textColor = 0xFF000000;
 
     public ShoppingList(String name) {
         this.name = name;
@@ -26,6 +28,22 @@ public class ShoppingList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public int getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
     }
 
 }

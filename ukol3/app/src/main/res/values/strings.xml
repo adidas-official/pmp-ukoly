@@ -9,4 +9,7 @@
     <string name="delete_list">Smazat seznam</string>
     <string name="btnBack">Zpet</string>
     <string name="btnClose">Ukoncit</string>
+    <string name="rename_list">prejmenovat</string>
+    <string name="new_name">novy nazev</string>
+    <string name="btnSave">Ulozit</string>
 </resources>

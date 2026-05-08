@@ -1,8 +1,12 @@
 package com.example.ukol3;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +52,13 @@ public class ListsActivity extends AppCompatActivity {
         });
     }
 
-//    // Metoda pro načtení dat
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDataFromDatabase(); // Aktualizuje seznam pokaždé, když se vrátíme z editace
+    }
+
+    // Metoda pro načtení dat
     private void loadDataFromDatabase() {
         new Thread(() -> {
             // Run DB query on background thread
@@ -81,6 +91,5 @@ public class ListsActivity extends AppCompatActivity {
                     rv.scrollToPosition(shoppingLists.size() - 1);
                 });
         }).start();
-
     }
 }

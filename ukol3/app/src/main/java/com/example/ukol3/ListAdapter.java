@@ -42,6 +42,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtra("LIST_ID", shoppingLists.get(currentPos).getListId());
                 intent.putExtra("LIST_NAME", shoppingLists.get(currentPos).getName());
+                intent.putExtra("BG_COLOR", currentList.getBackgroundColor());
+                intent.putExtra("TEXT_COLOR", currentList.getTextColor());
                 context.startActivity(intent);
             }
         });
@@ -67,37 +69,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         });
 
         holder.btnEdit.setOnClickListener(v -> {
-            int currentPos = holder.getBindingAdapterPosition();
-            if (currentPos != RecyclerView.NO_POSITION) {
-                showEditDialog(shoppingLists.get(currentPos), currentPos);
-            }
+            Intent intent = new Intent(context, EditListActivity.class);
+            intent.putExtra("LIST_ID", currentList.getListId());
+            intent.putExtra("LIST_NAME", currentList.getName());
+            intent.putExtra("BG_COLOR", currentList.getBackgroundColor());
+            intent.putExtra("TEXT_COLOR", currentList.getTextColor());
+            context.startActivity(intent);
         });
-    }
-
-    private void showEditDialog(ShoppingList list, int position) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View dialogView = inflater.inflate(R.layout.dialog_edit_list, null);
-
-        EditText etName = dialogView.findViewById(R.id.etEditListName);
-        etName.setText(list.getName());
-
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.edit_list)
-                .setView(dialogView)
-                .setPositiveButton(R.string.add_item, (dialog, which) -> {
-                    String newName = etName.getText().toString().trim();
-                    if (!newName.isEmpty()) {
-                        list.setName(newName);
-                        new Thread(() -> {
-                            AppDatabase.getInstance(context).shoppingDao().updateShoppingList(list);
-                            if (context instanceof Activity) {
-                                ((Activity) context).runOnUiThread(() -> notifyItemChanged(position));
-                            }
-                        }).start();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
     }
 
     @Override

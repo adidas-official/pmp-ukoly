@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            app:cornerRadius="8dp"
             android:text="@string/add_item" />
     </LinearLayout>
 
@@ -72,6 +73,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        app:cornerRadius="8dp"
         android:text="@string/btnBack" />
 
 </LinearLayout>
