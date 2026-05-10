@@ -55,7 +55,7 @@ public class ListsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadDataFromDatabase(); // Aktualizuje seznam pokaždé, když se vrátíme z editace
+        loadDataFromDatabase(); // Aktualizuje seznam pokaždé, když se vrátíme z editace, kvuli zmene barev
     }
 
     // Metoda pro načtení dat

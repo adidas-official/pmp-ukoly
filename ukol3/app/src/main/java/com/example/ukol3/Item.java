@@ -10,6 +10,10 @@ import androidx.room.PrimaryKey;
                 childColumns = "listId",
                 onDelete = ForeignKey.CASCADE))
 public class Item {
+    /**
+     * Entita pro položky seznamu
+     * Jedná se o tabulku v DB
+     */
     @PrimaryKey(autoGenerate = true)
     Integer id;
     Integer listId;

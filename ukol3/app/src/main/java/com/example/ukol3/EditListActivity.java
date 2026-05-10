@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class EditListActivity extends AppCompatActivity {
+    /**
+     * Trida pro upravu vzhledu seznamu a jeho jmena
+     * Uzivatel ma k dispozici na vyber nekolik barev, ktere jsou umisteny v gridu.
+     * Pro uspesne ulozeni musi byt seznam pojmenovan. Muze zustat puvodni jmeno (vyplni se samo hodnotami z DB)
+     */
 
     private int selectedBgColor;
     private int selectedTextColor;
@@ -47,6 +53,10 @@ public class EditListActivity extends AppCompatActivity {
 
         // Nastavení výchozího stavu náhledu
         tvListName.setText(currentName);
+        if (currentName != null) {
+            etName.setText(currentName);
+            tvListName.setText(currentName);
+        }
         updatePreview();
 
         // 3. Nastavení mřížek barev
@@ -57,7 +67,7 @@ public class EditListActivity extends AppCompatActivity {
         findViewById(R.id.btnSave).setOnClickListener(v -> saveChanges(etName.getText().toString()));
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        // Bonus: Dynamická změna náhledu při psaní jména
+        // Dynamická změna náhledu při psaní jména
         etName.addTextChangedListener(new android.text.TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -104,16 +114,27 @@ public class EditListActivity extends AppCompatActivity {
     }
 
     private void saveChanges(String newName) {
-        if (newName.isEmpty()) return;
+        String nameToSave = etName.getText().toString().trim();
+        // Kontrola, aby název nebyl prázdný (to je v pořádku)
+        if (nameToSave.isEmpty()) {
+            Toast.makeText(this, "Vyplňte všechna pole", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         new Thread(() -> {
+            // Vytvoříme objekt se VŠEMI aktuálními daty (nové jméno i vybrané barvy)
             ShoppingList list = new ShoppingList(newName);
-            list.setListId(listId);
+            list.setListId(listId); // Používáme vaše pojmenování setteru
             list.setBackgroundColor(selectedBgColor);
             list.setTextColor(selectedTextColor);
 
+            // Uložení do databáze
             AppDatabase.getInstance(this).shoppingDao().updateShoppingList(list);
-            runOnUiThread(this::finish);
+
+            // Návrat do ListsActivity
+            runOnUiThread(() -> {
+                finish();
+            });
         }).start();
     }
 }

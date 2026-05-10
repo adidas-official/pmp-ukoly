@@ -15,13 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemsViewHolder>{
+    /**
+     * Logika pro zobrazeni polozek v recycler view
+     */
 
+    private int bgColor;
+    private int textColor;
     Context context;
     List<Item> items;
 
-    public ItemAdapter(Context context, List<Item> items) {
+    public ItemAdapter(Context context, List<Item> items, int bgColor, int textColor) {
         this.context = context;
         this.items = items;
+        this.bgColor = bgColor;
+        this.textColor = textColor;
     }
 
     @NonNull
@@ -125,27 +132,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemsViewHolder>{
             holder.tvQuantity.setTextColor(android.graphics.Color.parseColor("#B71C1C"));
             holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFEBEE")); // Světle růžová
         } else {
-            // Stav: Aktivní (Standardní barvy - např. černý text a bílé/průhledné pozadí)
-            holder.tvName.setTextColor(android.graphics.Color.BLACK);
-            holder.tvQuantity.setTextColor(android.graphics.Color.BLACK);
-            holder.itemView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            // Stav: Aktivní (podle vybraneho motivu)
+            holder.tvName.setTextColor(textColor);
+            holder.tvQuantity.setTextColor(textColor);
+            holder.itemView.setBackgroundColor(bgColor);
+            holder.itemView.setAlpha(1.0f);
         }
-    }
-
-    private void updateStroke(ItemsViewHolder holder, boolean isCrossedOut) {
-        int flag = android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
-        if (isCrossedOut) {
-            holder.tvName.setPaintFlags(holder.tvName.getPaintFlags() | flag);
-            holder.tvQuantity.setPaintFlags(holder.tvQuantity.getPaintFlags() | flag);
-        } else {
-            holder.tvName.setPaintFlags(holder.tvName.getPaintFlags() & ~flag);
-            holder.tvQuantity.setPaintFlags(holder.tvQuantity.getPaintFlags() & ~flag);
-        }
-    }
-
-    public void setItems(List<Item> newItems) {
-        this.items = newItems;
-        notifyDataSetChanged();
     }
 
     @Override

@@ -36,6 +36,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         ShoppingList currentList = shoppingLists.get(position);
         holder.tvListName.setText(currentList.getName());
 
+        holder.itemView.setBackgroundColor(currentList.getBackgroundColor());
+        holder.tvListName.setTextColor(currentList.getTextColor());
+
         holder.itemView.setOnClickListener(v -> {
             int currentPos = holder.getBindingAdapterPosition();
             if (currentPos != RecyclerView.NO_POSITION) {

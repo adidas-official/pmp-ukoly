@@ -1,5 +1,6 @@
 package com.example.ukol3;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnBack;
     private TextView tvListName;
     private int currentListId;
+    private int listBgColor;
+    private int listTextColor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Získání ID seznamu z Intentu (výchozí hodnota -1 značí chybu)
         currentListId = getIntent().getIntExtra("LIST_ID", -1);
+        listBgColor = getIntent().getIntExtra("BG_COLOR", Color.WHITE);
+        listTextColor = getIntent().getIntExtra("TEXT_COLOR", Color.BLACK);
 
         if (currentListId == -1) {
             Toast.makeText(this, "Chyba: Seznam nenalezen", Toast.LENGTH_SHORT).show();
@@ -47,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 1. Inicializace seznamu a adaptéru
         items = new ArrayList<>();
-        adapter = new ItemAdapter(this, items);
+        adapter = new ItemAdapter(this, items, listBgColor, listTextColor);
 
         // 2. Nastavení RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvListOfItems);
